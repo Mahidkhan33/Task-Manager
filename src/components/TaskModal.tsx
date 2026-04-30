@@ -4,25 +4,15 @@ import { useState, useEffect } from "react";
 import { Task } from "@/types";
 import DatePicker from "@/components/DatePicker";
 
-/** Props accepted by TaskModal */
 interface TaskModalProps {
-  task?: Task;       // If provided, the modal opens in "edit" mode pre-filled with this task
-  isOpen: boolean;   // Controls modal visibility
+  task?: Task;
+  isOpen: boolean;
   onClose: () => void;
   onSubmit: (data: any) => void;
 }
 
-/**
- * TaskModal — a full-screen overlay form for creating or editing a task.
- *
- * It operates in two modes:
- *  - Create mode: `task` prop is undefined → blank form, "Create Task" button
- *  - Edit mode:   `task` prop is a Task object → form pre-filled, "Save Changes" button
- *
- * The modal is NOT rendered at all when `isOpen` is false (early return below).
- */
 export default function TaskModal({ task, isOpen, onClose, onSubmit }: TaskModalProps) {
-  // Local form state — mirrors the fields of a Task document
+
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -31,15 +21,6 @@ export default function TaskModal({ task, isOpen, onClose, onSubmit }: TaskModal
     dueDate: "",
   });
 
-  /**
-   * Sync the form when the modal opens or the task prop changes.
-   *
-   * - If `task` is provided (edit mode): populate the form with existing values.
-   * - If `task` is undefined (create mode): reset everything to defaults.
-   *
-   * `dueDate` is converted from an ISO datetime string to a plain YYYY-MM-DD date
-   * string so the DatePicker input can read it correctly.
-   */
   useEffect(() => {
     if (task) {
       setFormData({
@@ -58,17 +39,15 @@ export default function TaskModal({ task, isOpen, onClose, onSubmit }: TaskModal
         dueDate: "",
       });
     }
-  }, [task, isOpen]); // Re-run whenever the task or open state changes
+  }, [task, isOpen]);
 
-  // Don't mount the modal DOM at all when it's closed
   if (!isOpen) return null;
 
   return (
-    // Backdrop: semi-transparent black overlay with blur
+
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md p-4 animate-in fade-in duration-300">
       <div className="w-full max-w-lg rounded-[2.5rem] border border-white/10 bg-zinc-950 p-10 shadow-2xl shadow-indigo-500/10">
-        
-        {/* Dynamic title: "Edit Task" vs "Create Task" */}
+
         <h2 className="text-3xl font-bold tracking-tight text-white mb-8">
           {task ? "Edit Task" : "Create Task"}
         </h2>
@@ -76,11 +55,11 @@ export default function TaskModal({ task, isOpen, onClose, onSubmit }: TaskModal
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            onSubmit(formData); // Pass form data up to the Dashboard handler
+            onSubmit(formData);
           }}
           className="space-y-6"
         >
-          {/* Title field — required */}
+
           <div className="space-y-2">
             <label className="text-sm font-bold uppercase tracking-widest text-white/40 ml-1">Title</label>
             <input
@@ -91,8 +70,7 @@ export default function TaskModal({ task, isOpen, onClose, onSubmit }: TaskModal
               placeholder="What needs to be done?"
             />
           </div>
-          
-          {/* Description field — optional, multi-line */}
+
           <div className="space-y-2">
             <label className="text-sm font-bold uppercase tracking-widest text-white/40 ml-1">Description</label>
             <textarea
@@ -103,16 +81,15 @@ export default function TaskModal({ task, isOpen, onClose, onSubmit }: TaskModal
               placeholder="Add some details..."
             />
           </div>
-          
+
           <div className="grid grid-cols-2 gap-6">
-            {/* Priority selector — three toggle buttons instead of a dropdown */}
+
             <div className="space-y-2">
               <label className="text-sm font-bold uppercase tracking-widest text-white/40 ml-1">Priority</label>
               <div className="flex gap-2">
                 {(["low", "medium", "high"] as const).map((p) => {
                   const active = formData.priority === p;
 
-                  // Each priority level has a unique active colour; inactive buttons are muted
                   const colours = {
                     low: active ? "bg-blue-500/20 border-blue-500/60 text-blue-400" : "border-white/5 bg-white/5 text-white/30 hover:text-white/60",
                     medium: active ? "bg-amber-500/20 border-amber-500/60 text-amber-400" : "border-white/5 bg-white/5 text-white/30 hover:text-white/60",
@@ -121,7 +98,7 @@ export default function TaskModal({ task, isOpen, onClose, onSubmit }: TaskModal
                   return (
                     <button
                       key={p}
-                      type="button" // Prevent accidental form submission
+                      type="button"
                       onClick={() => setFormData({ ...formData, priority: p })}
                       className={`flex-1 rounded-xl border py-3 text-xs font-bold uppercase tracking-wider transition-all ${colours[p]}`}
                     >
@@ -132,7 +109,6 @@ export default function TaskModal({ task, isOpen, onClose, onSubmit }: TaskModal
               </div>
             </div>
 
-            {/* Due date — rendered by the custom DatePicker component */}
             <div className="space-y-2">
               <label className="text-sm font-bold uppercase tracking-widest text-white/40 ml-1">Due Date</label>
               <DatePicker
@@ -141,8 +117,7 @@ export default function TaskModal({ task, isOpen, onClose, onSubmit }: TaskModal
               />
             </div>
           </div>
-          
-          {/* Footer buttons */}
+
           <div className="flex items-center justify-end gap-4 mt-10">
             <button
               type="button"

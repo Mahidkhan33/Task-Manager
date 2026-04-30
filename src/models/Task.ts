@@ -1,10 +1,7 @@
 import mongoose, { Schema, Document, Types } from "mongoose";
 
-/**
- * TypeScript interface for a Task document.
- */
 export interface ITask extends Document {
-  userId: Types.ObjectId; // FIXED
+  userId: Types.ObjectId;
   title: string;
   description?: string;
   status: "todo" | "in-progress" | "done";

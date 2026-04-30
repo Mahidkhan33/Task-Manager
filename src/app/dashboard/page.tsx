@@ -6,27 +6,13 @@ import Navbar from "@/components/Navbar";
 import KanbanBoard from "@/components/KanbanBoard";
 import TaskModal from "@/components/TaskModal";
 
-/**
- * Dashboard — the main screen users see after logging in.
- *
- * This Client Component:
- *  - Fetches the user's tasks from the API on mount.
- *  - Passes them to the KanbanBoard for display.
- *  - Controls the TaskModal for creating / editing tasks.
- */
 export default function Dashboard() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // When `editingTask` is undefined the modal creates a new task.
-  // When it holds a Task object the modal pre-fills fields for editing.
   const [editingTask, setEditingTask] = useState<Task | undefined>(undefined);
   const [loading, setLoading] = useState(true);
 
-  /**
-   * Fetches all tasks for the logged-in user from GET /api/tasks.
-   * Called on first render and after every create / update / delete.
-   */
   const fetchTasks = async () => {
     try {
       const res = await fetch("/api/tasks");
@@ -39,18 +25,10 @@ export default function Dashboard() {
     }
   };
 
-  // Load tasks once when the component first mounts (empty dependency array = run once)
   useEffect(() => {
     fetchTasks();
   }, []);
 
-  /**
-   * Handles both creating a new task (POST) and updating an existing one (PUT).
-   * The URL and HTTP method are determined by whether `editingTask` is set.
-   *
-   * After the API call, the modal is closed and tasks are re-fetched to show
-   * the latest data without a full page reload.
-   */
   const handleCreateOrUpdate = async (formData: any) => {
     const url = editingTask ? `/api/tasks/${editingTask._id}` : "/api/tasks";
     const method = editingTask ? "PUT" : "POST";
@@ -63,13 +41,9 @@ export default function Dashboard() {
 
     setIsModalOpen(false);
     setEditingTask(undefined);
-    fetchTasks(); // Refresh the board with the latest data
+    fetchTasks();
   };
 
-  /**
-   * Deletes a task after the user confirms the action.
-   * Browser's `confirm()` is used as a lightweight guard against accidental deletes.
-   */
   const handleDelete = async (id: string) => {
     if (confirm("Are you sure?")) {
       await fetch(`/api/tasks/${id}`, { method: "DELETE" });
@@ -77,10 +51,6 @@ export default function Dashboard() {
     }
   };
 
-  /**
-   * Updates only the `status` field of a task — triggered when the user
-   * changes the status dropdown on a TaskCard.
-   */
   const handleStatusChange = async (id: string, status: string) => {
     await fetch(`/api/tasks/${id}`, {
       method: "PUT",
@@ -99,7 +69,7 @@ export default function Dashboard() {
             <h1 className="text-4xl font-bold tracking-tight">Your Dashboard</h1>
             <p className="mt-2 text-white/50">Manage your work and stay productive.</p>
           </div>
-          {/* Clicking "+ New Task" opens the modal in create mode (no editingTask) */}
+
           <button
             onClick={() => {
               setEditingTask(undefined);
@@ -111,7 +81,6 @@ export default function Dashboard() {
           </button>
         </div>
 
-        {/* Show a spinner while tasks are loading, then render the board */}
         {loading ? (
           <div className="flex h-64 items-center justify-center">
             <div className="h-8 w-8 animate-spin rounded-full border-2 border-violet-400 border-t-transparent shadow-[0_0_12px_rgba(139,92,246,0.5)]"></div>
@@ -129,7 +98,6 @@ export default function Dashboard() {
         )}
       </main>
 
-      {/* TaskModal is always in the DOM but only visible when isOpen is true */}
       <TaskModal
         isOpen={isModalOpen}
         task={editingTask}
