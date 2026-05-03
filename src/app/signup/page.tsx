@@ -5,15 +5,12 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 export default function SignupPage() {
-
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
-
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -33,16 +30,13 @@ export default function SignupPage() {
 
       if (res.ok) {
         setSuccess(true);
-
         setTimeout(() => router.push("/login"), 1500);
       } else {
         setError(data.message || "Signup failed");
       }
     } catch {
-
       setError("Something went wrong");
     } finally {
-
       setLoading(false);
     }
   };

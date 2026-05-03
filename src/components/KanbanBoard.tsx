@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -24,6 +23,15 @@ interface KanbanBoardProps {
   onStatusChange: (id: string, status: string) => void;
 }
 
+interface ColumnProps {
+  id: string;
+  title: string;
+  tasks: Task[];
+  onEdit: (task: Task) => void;
+  onDelete: (id: string) => void;
+  onStatusChange: (id: string, status: string) => void;
+}
+
 const columns = [
   { id: "todo", title: "Todo" },
   { id: "in-progress", title: "In Progress" },
@@ -37,7 +45,7 @@ function Column({
   onEdit,
   onDelete,
   onStatusChange,
-}: any) {
+}: ColumnProps) {
   const { setNodeRef } = useDroppable({
     id,
   });
@@ -63,11 +71,11 @@ function Column({
       </div>
 
       <SortableContext
-        items={tasks.map((task: any) => task._id)}
+        items={tasks.map((task) => task._id)}
         strategy={verticalListSortingStrategy}
       >
         <div className="space-y-4">
-          {tasks.map((task: any) => (
+          {tasks.map((task) => (
             <TaskCard
               key={task._id}
               task={task}
@@ -129,6 +137,8 @@ export default function KanbanBoard({
     }
   }
 
+  const priorityWeight: Record<Task["priority"], number> = { high: 3, medium: 2, low: 1 };
+
   return (
     <DndContext
       sensors={sensors}
@@ -138,7 +148,6 @@ export default function KanbanBoard({
     >
       <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
         {columns.map((column) => {
-          const priorityWeight: any = { high: 3, medium: 2, low: 1 };
           const columnTasks = tasks
             .filter((t) => t.status === column.id)
             .sort((a, b) => priorityWeight[b.priority] - priorityWeight[a.priority]);

@@ -11,7 +11,7 @@ export async function GET() {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
-  const tasks = await Task.find({ userId: (user as any).userId });
+  const tasks = await Task.find({ userId: user.userId });
 
   return NextResponse.json(tasks);
 }
@@ -28,7 +28,7 @@ export async function POST(req: Request) {
 
   const task = await Task.create({
     ...data,
-    userId: (user as any).userId,
+    userId: user.userId,
   });
 
   return NextResponse.json(task);

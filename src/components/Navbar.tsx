@@ -13,7 +13,6 @@ export default function Navbar() {
 
   return (
     <nav className="sticky top-0 z-40 w-full border-b border-white/10 bg-black/50 backdrop-blur-md">
-
       <div className="flex h-16 items-center justify-between px-6">
         <Link href="/dashboard" className="text-xl font-bold tracking-tighter text-white">
           TASK<span className="text-violet-500">FLOW</span>

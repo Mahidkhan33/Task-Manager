@@ -16,7 +16,6 @@ export async function POST(req: Request) {
 
     const user = await User.findOne({ email });
     if (!user) {
-
       return NextResponse.json({ message: "Invalid credentials" }, { status: 401 });
     }
 
@@ -25,7 +24,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: "Invalid credentials" }, { status: 401 });
     }
 
-    const token = signToken({ userId: user._id });
+    const token = signToken({ userId: (user._id as any).toString(), email: user.email });
     const response = NextResponse.json({ message: "Login successful" });
 
     response.cookies.set("token", token, {

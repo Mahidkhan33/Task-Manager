@@ -1,19 +1,18 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Task } from "@/types";
+import { Task, TaskFormData } from "@/types";
 import DatePicker from "@/components/DatePicker";
 
 interface TaskModalProps {
   task?: Task;
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (data: any) => void;
+  onSubmit: (data: TaskFormData) => void;
 }
 
 export default function TaskModal({ task, isOpen, onClose, onSubmit }: TaskModalProps) {
-
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<TaskFormData>({
     title: "",
     description: "",
     priority: "medium",
@@ -44,10 +43,8 @@ export default function TaskModal({ task, isOpen, onClose, onSubmit }: TaskModal
   if (!isOpen) return null;
 
   return (
-
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md p-4 animate-in fade-in duration-300">
       <div className="w-full max-w-lg rounded-[2.5rem] border border-white/10 bg-zinc-950 p-10 shadow-2xl shadow-indigo-500/10">
-
         <h2 className="text-3xl font-bold tracking-tight text-white mb-8">
           {task ? "Edit Task" : "Create Task"}
         </h2>
@@ -59,7 +56,6 @@ export default function TaskModal({ task, isOpen, onClose, onSubmit }: TaskModal
           }}
           className="space-y-6"
         >
-
           <div className="space-y-2">
             <label className="text-sm font-bold uppercase tracking-widest text-white/40 ml-1">Title</label>
             <input
@@ -83,7 +79,6 @@ export default function TaskModal({ task, isOpen, onClose, onSubmit }: TaskModal
           </div>
 
           <div className="grid grid-cols-2 gap-6">
-
             <div className="space-y-2">
               <label className="text-sm font-bold uppercase tracking-widest text-white/40 ml-1">Priority</label>
               <div className="flex gap-2">
@@ -112,7 +107,7 @@ export default function TaskModal({ task, isOpen, onClose, onSubmit }: TaskModal
             <div className="space-y-2">
               <label className="text-sm font-bold uppercase tracking-widest text-white/40 ml-1">Due Date</label>
               <DatePicker
-                value={formData.dueDate}
+                value={formData.dueDate || ""}
                 onChange={(val) => setFormData({ ...formData, dueDate: val })}
               />
             </div>

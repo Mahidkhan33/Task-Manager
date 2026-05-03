@@ -1,5 +1,3 @@
-
-
 export interface User {
   _id: string;
   name: string;
@@ -18,4 +16,12 @@ export interface Task {
   dueDate?: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface TaskFormData {
+  title: string;
+  description?: string;
+  status: "todo" | "in-progress" | "done";
+  priority: "low" | "medium" | "high";
+  dueDate?: string;
 }

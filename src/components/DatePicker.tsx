@@ -23,14 +23,10 @@ function toLocalDateString(date: Date) {
 
 export default function DatePicker({ value, onChange }: DatePickerProps) {
   const today = new Date();
-
   const selected = value ? new Date(value + "T00:00:00") : null;
-
   const [open, setOpen] = useState(false);
-
   const [viewYear, setViewYear] = useState(selected?.getFullYear() ?? today.getFullYear());
   const [viewMonth, setViewMonth] = useState(selected?.getMonth() ?? today.getMonth());
-
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -40,12 +36,10 @@ export default function DatePicker({ value, onChange }: DatePickerProps) {
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
-
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   function getDaysInMonth(year: number, month: number) {
-
     return new Date(year, month + 1, 0).getDate();
   }
 
@@ -99,7 +93,6 @@ export default function DatePicker({ value, onChange }: DatePickerProps) {
 
   return (
     <div ref={ref} className="relative w-full">
-
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
@@ -130,7 +123,6 @@ export default function DatePicker({ value, onChange }: DatePickerProps) {
 
       {open && (
         <div className="absolute bottom-full left-0 z-50 mb-2 w-72 rounded-2xl border border-white/10 bg-zinc-900 p-4 shadow-2xl shadow-black/60">
-
           <div className="mb-4 flex items-center justify-between">
             <span className="text-sm font-bold text-white">
               {MONTHS[viewMonth]} {viewYear}
@@ -141,7 +133,6 @@ export default function DatePicker({ value, onChange }: DatePickerProps) {
                 onClick={prevMonth}
                 className="flex h-7 w-7 items-center justify-center rounded-xl bg-white/5 text-white/50 hover:bg-white/10 hover:text-white transition"
               >
-
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
               </button>
               <button
@@ -149,7 +140,6 @@ export default function DatePicker({ value, onChange }: DatePickerProps) {
                 onClick={nextMonth}
                 className="flex h-7 w-7 items-center justify-center rounded-xl bg-white/5 text-white/50 hover:bg-white/10 hover:text-white transition"
               >
-
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
               </button>
             </div>
@@ -164,14 +154,12 @@ export default function DatePicker({ value, onChange }: DatePickerProps) {
           </div>
 
           <div className="grid grid-cols-7 text-center">
-
             {Array.from({ length: firstDay }).map((_, i) => (
               <span key={`empty-${i}`} />
             ))}
 
             {Array.from({ length: daysInMonth }).map((_, i) => {
               const day = i + 1;
-
               const isToday =
                 day === today.getDate() &&
                 viewMonth === today.getMonth() &&

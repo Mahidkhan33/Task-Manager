@@ -10,7 +10,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
 
   const { id } = await params;
 
-  const task = await Task.findOne({ _id: id, userId: (user as any).userId });
+  const task = await Task.findOne({ _id: id, userId: user.userId });
 
   if (!task) return NextResponse.json({ message: "Task not found" }, { status: 404 });
 
@@ -26,7 +26,7 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
   const data = await req.json();
 
   const task = await Task.findOneAndUpdate(
-    { _id: id, userId: (user as any).userId },
+    { _id: id, userId: user.userId },
     { ...data },
     { new: true }
   );
@@ -43,7 +43,7 @@ export async function DELETE(req: Request, { params }: { params: Promise<{ id: s
 
   const { id } = await params;
 
-  const task = await Task.findOneAndDelete({ _id: id, userId: (user as any).userId });
+  const task = await Task.findOneAndDelete({ _id: id, userId: user.userId });
 
   if (!task) return NextResponse.json({ message: "Task not found" }, { status: 404 });
 

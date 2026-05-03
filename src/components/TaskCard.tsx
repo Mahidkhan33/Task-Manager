@@ -28,7 +28,7 @@ export default function TaskCard({
     opacity: isDragging ? 0.3 : 1,
   };
 
-  const priorityColors: any = {
+  const priorityColors: Record<Task["priority"], string> = {
     low: "bg-blue-500/10 text-blue-500",
     medium: "bg-yellow-500/10 text-yellow-500",
     high: "bg-red-500/10 text-red-500",

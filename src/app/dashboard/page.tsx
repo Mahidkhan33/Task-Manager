@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Task } from "@/types";
+import { Task, TaskFormData } from "@/types";
 import Navbar from "@/components/Navbar";
 import KanbanBoard from "@/components/KanbanBoard";
 import TaskModal from "@/components/TaskModal";
@@ -29,7 +29,7 @@ export default function Dashboard() {
     fetchTasks();
   }, []);
 
-  const handleCreateOrUpdate = async (formData: any) => {
+  const handleCreateOrUpdate = async (formData: TaskFormData) => {
     const url = editingTask ? `/api/tasks/${editingTask._id}` : "/api/tasks";
     const method = editingTask ? "PUT" : "POST";
 

@@ -5,14 +5,11 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 export default function LoginPage() {
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
-
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -32,16 +29,13 @@ export default function LoginPage() {
 
       if (res.ok) {
         setSuccess(true);
-
         setTimeout(() => router.push("/dashboard"), 1000);
       } else {
         setError(data.message || "Login failed");
       }
     } catch {
-
       setError("Something went wrong");
     } finally {
-
       setLoading(false);
     }
   };
